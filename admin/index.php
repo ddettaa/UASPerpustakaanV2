@@ -1,0 +1,1 @@
+Folder ini tidak dapat di akses

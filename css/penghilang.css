@@ -1,0 +1,12 @@
+
+@media (max-width: 768px) {
+.nav-item .fas.fa-angle-right {
+display: none;
+}
+}
+.nav-link, .brand-text, .d-block {
+    color: #ffffff !important;
+  }
+  th {
+    color: #ffffff !important;
+  }
