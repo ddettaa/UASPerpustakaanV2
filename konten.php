@@ -33,12 +33,20 @@ include 'config/koneksi.php';
         </div>
         <div class="card-body">
           Selamat datang di pemrograman sederhana sistem informasi WEB.<br>
-          Swamsembada
+          Silahkan pilih menu yang tersedia.
         </div>
         </div>
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Kalender Hari Ini</h3>
+          <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+    </div>
         </div>
         <div class="card-body">
           <?php
@@ -201,7 +209,7 @@ include 'config/koneksi.php';
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" name="pass" id="exampleInputPassword1" placeholder="Password">
+                    <input type="password" class="form-control" name="pass" id="exampleInputPassword1" placeholder="Masukkan Password anda">
                   </div>
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary">Login</button>
@@ -242,18 +250,19 @@ include 'config/koneksi.php';
       }
       exit;
     } else {
-      echo "Username Password anda Salah.";
+      echo "<div class='card'>
+        <div class='card-header'>
+          <h3 class='card-title'>Login Gagal</h3>
+        </div>
+        <div class='card-body'>
+          <p>Username atau password yang anda masukkan salah.</p>
+          <a href='?page=login' class='btn btn-primary'>Login Ulang</a>
+        </div>
+      </div>";
     }
-  } else if ($_GET['page'] == 'logout') {
-    session_start();
-    session_destroy();
-  ?>
-    <section class="content-header">
-      <div class="container-fluid">
-        <h1>Logout Berhasil</h1>
-      </div></section>
-  <?php
+  } else {
+    echo "Halaman tidak ditemukan";
   }
-  ?>
+    ?>
 
 </div>

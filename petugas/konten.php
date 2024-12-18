@@ -46,12 +46,20 @@ else
         </div>
         <div class="card-body">
           Selamat datang di pemrograman sederhana sistem informasi WEB.<br>
-          Swamsembada
+          Silahkan pilih menu yang tersedia.
         </div>
         </div>
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Kalender Hari Ini</h3>
+          <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+    </div>
         </div>
         <div class="card-body">
           <?php
@@ -186,6 +194,7 @@ else
       </section>
     <?php
 		}
+
 //==============================[ Anggota ]==================================		
 				else if ($_GET['page'] == 'anggota')
 //--------------------------------------------------------------------------
@@ -343,7 +352,7 @@ else
       echo "Ada masalah: " . $db->error;
     }
 }
-//==============================[ Anggota ]==================================		
+//==============================[ Peminjaman ]==================================		
 				else if ($_GET['page'] == 'peminjaman')
 //--------------------------------------------------------------------------
 {
@@ -396,48 +405,60 @@ else
       </section>
     <?php
 } else if ($_GET['page'] == 'tambah_pinjam') {
-    ?>
-      <section class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1>Tambah Peminjaman</h1>
-            </div>
+  ?>
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Tambah Peminjaman</h1>
           </div>
-        </div>
-      </section>
-      <section class="content">
-        <div class="card">
-          <div class="card-body">
-            <form action="?page=pinjam_tambah" method="post">
-              <div class="form-group">
-              <label>Id Petugas</label>
-              <input type="text" name="id_petugas" class="form-control" required>
-            </div>
-              <div class="form-group">
-                <label>Id Anggota</label>
-                <input type="text" name="id_anggota" class="form-control" required>
-              </div>
-              <div class="form-group">
-              <label>Id Buku</label>
-              <input type="text" name="id_buku" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Tanggal Pinjam</label>
-              <input type="date" name="tanggal_pinjam" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Tanggal Kembali</label>
-              <input type="date" name="tanggal_kembali" class="form-control">
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-          </form>
         </div>
       </div>
     </section>
-  <?php
+    <section class="content">
+      <div class="card">
+        <div class="card-body">
+          <form action="?page=pinjam_tambah" method="post">
+            <div class="form-group">
+            <label>Id Petugas</label>
+            <input type="text" name="id_petugas" class="form-control" required>
+          </div>
+            <div class="form-group">
+              <label>Id Anggota</label>
+              <input type="text" name="id_anggota" class="form-control" required>
+            </div>
+            <div class="form-group">
+					  <label>Buku</label>
+					  <select name="id_buku" class="form-control" required>
+						<option>Pilih Buku</option>
+						<?php
+						$hasil = $db->query("SELECT id_buku, judul FROM buku");
+						if (!$hasil) {
+						  echo "<option value=''>Ada masalah: " . $db->error . "</option>";
+            } else {
+              while ($k = $hasil->fetch_assoc()) {
+              $pilih = $d['id_buku'] == $k['id_buku'] ? 'selected' : '';
+              echo "<option value='{$k['id_buku']}' {$pilih}>{$k['judul']}</option>";
+						  }
+						}
+						?>
+					  </select>
+          <div class="form-group">
+            <label>Tanggal Pinjam</label>
+            <input type="date" name="tanggal_pinjam" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Tanggal Kembali</label>
+            <input type="date" name="tanggal_kembali" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+<?php
 }
 else if ($_GET['page']== 'edit_pinjam'){
     ?>
@@ -469,9 +490,22 @@ else if ($_GET['page']== 'edit_pinjam'){
                 <input type="text" name="id_anggota" class="form-control" value="<?= $d['id_anggota'] ?>" required>
               </div>
               <div class="form-group">
-              <label>Id Buku</label>
-              <input type="text" name="id_buku" class="form-control" value="<?= $d['id_buku'] ?>" required>
-            </div>
+					  <label>Buku</label>
+					  <select name="id_buku" class="form-control" required>
+						<option>Pilih Buku</option>
+						<?php
+						$hasil = $db->query("SELECT id_buku, judul FROM buku");
+						if (!$hasil) {
+						  echo "<option value=''>Ada masalah: " . $db->error . "</option>";
+            } else {
+              while ($k = $hasil->fetch_assoc()) {
+              $pilih = $d['id_buku'] == $k['id_buku'] ? 'selected' : '';
+              echo "<option value='{$k['id_buku']}' {$pilih}>{$k['judul']}</option>";
+						  }
+						}
+						?>
+					  </select>
+					</div>
             <div class="form-group">
               <label>Tanggal Pinjam</label>
               <input type="date" name="tanggal_pinjam" class="form-control" value="<?= $d['tanggal_pinjam'] ?>" required>
@@ -564,6 +598,7 @@ else if ($_GET['page']== 'edit_pinjam'){
 {
 	session_destroy();
     header('location: ../index.php');
+    
 }
 }
 
