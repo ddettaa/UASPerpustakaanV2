@@ -70,7 +70,15 @@ else
           $hariini = date('j'); // Get current day of month
 
           echo "<table class='table table-bordered'>";
-          echo "<tr style='background: linear-gradient(to right,rgb(21, 3, 102),rgb(48, 128, 234)); color: white;'><th>Minggu</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th></tr>";
+          echo "<tr style='background: linear-gradient(to right,rgb(21, 3, 102),rgb(48, 128, 234)); color: white;'>
+          <th style='background: linear-gradient(to right,rgb(143, 37, 37),rgb(249, 97, 97));'>Minggu</th>
+          <th>Senin</th>
+          <th>Selasa</th>
+          <th>Rabu</th>
+          <th>Kamis</th>
+          <th>Jumat</th>
+          <th>Sabtu</th>
+          </tr>";
 
           $hitunghari = 1;
           echo "<tr>";
@@ -122,12 +130,12 @@ else
             <th>Penulis</th>
             <th>Penerbit</th>
             <th>Tahun Terbit</th>
-            <th>Id Kategori</th>
+            <th>Kategori</th>
             <th>Aksi</th>
           </tr>
         <?php
         $hasil = $db->query(" 
-          SELECT  b.id_buku, b.judul, b.penulis, b.penerbit, b.tahun_terbit, b.id_kategori
+          SELECT  b.id_buku, b.judul, b.penulis, b.penerbit, b.tahun_terbit, k.nama_kategori
           FROM buku b
           LEFT JOIN kategori k ON k.id_kategori=b.id_kategori		
         ");
@@ -143,7 +151,7 @@ else
               <td>{$d['penulis']}</td>
               <td>{$d['penerbit']}</td>
               <td>{$d['tahun_terbit']}</td>
-              <td>{$d['id_kategori']}</td>
+              <td>{$d['nama_kategori']}</td>
               <td>
                 <a href='?page=edit_buku&id={$d['id_buku']}' class='btn bg-warning'>Edit</a>
                 <a href='?page=hapus_buku&id={$d['id_buku']}' class='btn delete bg-danger' onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Hapus</a>
@@ -628,15 +636,22 @@ else
         <table class="table table-bordered table-hover">
           <tr style="background: linear-gradient(to right,rgb(21, 3, 102),rgb(48, 128, 234));">
             <th>Id Peminjaman</th>
-            <th>Id Petugas</th>
-            <th>Id Anggota</th>
-            <th>Id Buku</th>
+            <th>Petugas</th>
+            <th>Anggota</th>
+            <th>Buku</th>
             <th>Tanggal Pinjam</th>
             <th>Tanggal Kembali</th>
             <th>Aksi</th>
           </tr>
         <?php
-        $hasil = $db->query("SELECT id_peminjaman, id_petugas, id_anggota, id_buku, tanggal_pinjam, tanggal_kembali FROM peminjaman");
+        $hasil = $db->query("
+        SELECT p.id_peminjaman, u.username, a.nama, b.judul, p.tanggal_pinjam, p.tanggal_kembali 
+        FROM peminjaman p
+        LEFT JOIN user u ON u.id_petugas=p.id_petugas
+        LEFT JOIN anggota a ON a.id_anggota=p.id_anggota
+        LEFT JOIN buku b ON b.id_buku=p.id_buku
+
+        ");
         if (!$hasil) {
           echo "<tr><td colspan='5'>Ada masalah: " . $db->error . "</td></tr>";
         } else {
@@ -644,9 +659,9 @@ else
             echo "
             <tr>
               <td>{$d['id_peminjaman']}</td>
-              <td>{$d['id_petugas']}</td>
-              <td>{$d['id_anggota']}</td>
-              <td>{$d['id_buku']}</td>
+              <td>{$d['username']}</td>
+              <td>{$d['nama']}</td>
+              <td>{$d['judul']}</td>
               <td>{$d['tanggal_pinjam']}</td>
               <td>{$d['tanggal_kembali']}</td>
               <td>

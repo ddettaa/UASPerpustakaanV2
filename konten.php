@@ -57,7 +57,15 @@ include 'config/koneksi.php';
           $hariini = date('j'); // Get current day of month
 
           echo "<table class='table table-bordered'>";
-          echo "<tr style='background: linear-gradient(to right,rgb(21, 3, 102),rgb(48, 128, 234)); color: white;'><th>Minggu</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th></tr>";
+          echo "<tr style='background: linear-gradient(to right,rgb(21, 3, 102),rgb(48, 128, 234)); color: white;'>
+          <th style='background: linear-gradient(to right,rgb(143, 37, 37),rgb(249, 97, 97));'>Minggu</th>
+          <th>Senin</th>
+          <th>Selasa</th>
+          <th>Rabu</th>
+          <th>Kamis</th>
+          <th>Jumat</th>
+          <th>Sabtu</th>
+          </tr>";
 
           $hitunghari = 1;
           echo "<tr>";
@@ -102,12 +110,13 @@ include 'config/koneksi.php';
           <th>Penulis</th>
           <th>Penerbit</th>
           <th>Tahun Terbit</th>
-          <th>Id Kategori</th>
+          <th>Kategori</th>
         </tr>
         <?php
         $hasil = $db->query(" 
-              SELECT  b.id_buku, b.judul, b.penulis, b.penerbit, b.tahun_terbit, b.id_kategori
+              SELECT  b.id_buku, b.judul, b.penulis, b.penerbit, b.tahun_terbit, k.nama_kategori
               FROM buku b 
+              left join kategori k on b.id_kategori = k.id_kategori
               ");
 
         if (!$hasil) {
@@ -121,7 +130,7 @@ include 'config/koneksi.php';
                     <td>{$d['penulis']}</td>
                     <td>{$d['penerbit']}</td>
                     <td>{$d['tahun_terbit']}</td>
-                    <td>{$d['id_kategori']}</td>
+                    <td>{$d['nama_kategori']}</td>
                   </tr>";
           }
         }
